@@ -1,12 +1,14 @@
-import { Textarea, Text, Box, Button, Flex, Spacer, Input, Select, Divider } from "@chakra-ui/react"
+import { Textarea, Text, Box, Button, Flex, Spacer, Input, Select, Divider, toast, useToast, Icon } from "@chakra-ui/react"
 import React, { useCallback, useState } from "react"
 import { CopyIcon } from '@chakra-ui/icons'
 import LoadingOverlay from 'react-loading-overlay-ts';
 import GenerateEmbed from "./GenerateEmbed";
-
+import UploadButton from "./UploadButton";
+import { FiVideo, FiSend } from 'react-icons/fi'
 // @ts-ignore
 export default function UploadVideo({ }) {
     let [value, setValue] = React.useState('')
+    const toast = useToast()
     // @ts-ignore
     let handleInputChange = (e) => {
         let inputValue = e.target.value
@@ -22,16 +24,23 @@ export default function UploadVideo({ }) {
         setTimeout(() => {
             setGenerated(true)
             setActive(value => !value)
+            toast({
+                title: `Video uploaded successfully`,
+                status: 'success',
+                isClosable: true,
+            })
         }, 2000
         )
 
 
     }, [])
 
-function reset() {
-    setGenerated(false)
-    setActive(false)
-}
+    function reset() {
+        setGenerated(false)
+        setActive(false)
+
+
+    }
 
     return (
         <>
@@ -52,12 +61,14 @@ function reset() {
                     <Flex alignItems={'end'} flexDirection={
                         'column'
                     } justify="space-between" >
-                        <Text color={'white'} fontSize='2xl' >TheTangible Life - Digital Rights Management (Dapp)</Text>
+                        <Text color={'white'} fontSize='3xl' fontWeight={'bold'} >TheTangible Life - Digital Rights Management (Dapp)</Text>
                         <Spacer mt={'16px'} />
                         <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
                             {/* create a button to for uploading file */}
+                            {/* @ts-ignore */}
 
-                            <Button color={'green'}> Upload <Input type={'file'} padding={'4px'} variant='outline' placeholder='0x1234...' /></Button>
+                            <UploadButton />
+
                         </Flex>
                         <Spacer mt={'8px'} />
 
@@ -87,9 +98,10 @@ function reset() {
                             // isLoading
                             // loadingText='Submitting'
 
-                            colorScheme='teal'
+                            colorScheme='green'
+
                             onClick={handleButtonClicked}
-                            variant='outline'
+
                             justifyContent={'center'}
                         >
                             Submit
@@ -105,19 +117,33 @@ function reset() {
 
 
 
-<Flex  hidden={!isGenerated} alignItems={'end'} direction={'column'} alignSelf="end">
-<Button
-            // isLoading
-            // loadingText='Submitting'
+                <Flex hidden={!isGenerated} alignItems={'end'} direction={'column'} alignSelf="end">
+                    <Button
+                        // isLoading
+                        // loadingText='Submitting'
 
-            colorScheme='teal'
-            variant='outline'
-            justifyContent={'center'}
-            onClick={reset}
-          >
-            Reset
-          </Button>
-</Flex>
+                        colorScheme='red'
+                        //@ts-ignore
+                       
+                        justifyContent={'center'}
+                        onClick={reset}>
+                        Reset
+                    </Button>
+                </Flex>
+
+
+                <Box hidden={!isGenerated}>
+
+                    <Flex direction={'column'} alignItems={'center'}>
+                        <Text fontSize='2xl' fontWeight={'bold'} color={'white'}>TheTangibleLife DRM</Text>
+                        <Text fontSize='lg' color={'white'} >This video is only available to NFT owners of TheTangibleLife NFT</Text>
+
+                        <Text fontSize='lg' >To unlock this video, please connect your wallet</Text>
+                        <Button colorScheme={'green'} height="30px" > <Text fontSize='sm' fontWeight={'semibold'} color={'white'}>Connect Wallet</Text> </Button>
+                    </Flex>
+
+
+                </Box>
 
             </LoadingOverlay>
 

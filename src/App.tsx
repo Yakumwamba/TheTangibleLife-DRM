@@ -4,11 +4,13 @@ import Layout from "./components/Layout";
 import ConnectButton from "./components/ConnectButton";
 import AccountModal from "./components/AccountModal";
 import "@fontsource/inter";
-import GenerateEmbed from "./components/GenerateEmbed";
-import UploadVideo from "./components/UploadComponenet";
+
+
 import { title } from "process";
 import { useEthers, useEtherBalance, useContractFunction } from "@usedapp/core";
 import React from "react";
+
+import UploadVideo from "./components/UploadComponenet";
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // usestate for uploaded 
@@ -21,12 +23,13 @@ function App() {
   // @ts-ignore
   function uploadCallback() {
     setUploaded(true);
+
   };
   return (
     <ChakraProvider theme={theme}>
       <Layout>
 
-        <Box h={'10%'} w={'100'} alignSelf={'center'} p={4} >
+        <Box w={'100'} alignSelf={'center'} p={4} >
           <ConnectButton handleOpenModal={onOpen} handleConnectWallet={handleConnectWallet} />
           <AccountModal isOpen={isOpen} onClose={onClose} />
         </Box>
@@ -37,15 +40,8 @@ function App() {
             height="100%"
           />we
         </div> */}
- 
-        {uploaded ? < GenerateEmbed /> : <UploadVideo />}
-      
 
-      <Box>
-
-      </Box>
-      
-      
+        <UploadVideo />
 
       </Layout>
     </ChakraProvider>

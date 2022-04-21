@@ -28,12 +28,14 @@ export default function GenerateEmbedCode() {
 
   return (
     <>
+    <Box >
 
       <Flex alignItems={'end'} flexDirection={'column'} justify="space-between"  >
-        <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
-          <Text color={'white'} mb='8px'>Generated Embed Code: </Text>
-
-          <CopyIcon onClick={() => {
+        <Box >
+        <Flex flexDirection={'row'} justifyContent="between"  >
+          <Text  fontWeight={'semibold'}  color={'white'} mb='8px'>Generated Embed Code: </Text>
+          <Spacer mt={'8px'} />
+          <CopyIcon fontSize={25} onClick={() => {
             toast({
               title: `iFrame copied`,
               status: 'success',
@@ -41,6 +43,8 @@ export default function GenerateEmbedCode() {
             })
           }} color={'white'} />
         </Flex>
+        </Box>
+       
 
         <Textarea
           placeholder='Embed code generated here...'
@@ -49,9 +53,8 @@ export default function GenerateEmbedCode() {
         />
         <Spacer mt={'8px'} />
 
-
       </Flex>
-
+      </Box>
 
     </>
   )
