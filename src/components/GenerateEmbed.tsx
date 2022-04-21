@@ -26,10 +26,8 @@ export default function generateEmbedCode() {
   }
   return (
     <>
-      <Box h={'200px'} w='25%'  >
-        <Flex alignItems={'end'} flexDirection={
-          'column'
-        } justify="space-between" >
+     
+        <Flex alignItems={'end'} flexDirection={'column'} justify="space-between"  >
           <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
             <Text color={'white'} mb='8px'>Generated Embed Code:</Text>
 
@@ -42,19 +40,10 @@ export default function generateEmbedCode() {
             h="80%"
           />
           <Spacer mt={'8px'} />
-          <Button
-            // isLoading
-            // loadingText='Submitting'
-
-            colorScheme='teal'
-            variant='outline'
-            justifyContent={'center'}
-          >
-            Reset
-          </Button>
+    
 
         </Flex>
-      </Box>
+ 
 
     </>
   )

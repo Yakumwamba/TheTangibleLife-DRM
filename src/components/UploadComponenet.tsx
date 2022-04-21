@@ -2,6 +2,7 @@ import { Textarea, Text, Box, Button, Flex, Spacer, Input, Select, Divider } fro
 import React, { useCallback, useState } from "react"
 import { CopyIcon } from '@chakra-ui/icons'
 import LoadingOverlay from 'react-loading-overlay-ts';
+import GenerateEmbed from "./GenerateEmbed";
 
 // @ts-ignore
 export default function UploadVideo({ }) {
@@ -14,9 +15,24 @@ export default function UploadVideo({ }) {
     }
 
     const [isActive, setActive] = useState(false)
+    const [isGenerated, setGenerated] = useState(false)
     const handleButtonClicked = useCallback(() => {
         setActive(value => !value)
+
+        setTimeout(() => {
+            setGenerated(true)
+            setActive(value => !value)
+        }, 2000
+        )
+
+
     }, [])
+
+function reset() {
+    setGenerated(false)
+    setActive(false)
+}
+
     return (
         <>
             <LoadingOverlay
@@ -32,7 +48,7 @@ export default function UploadVideo({ }) {
                 }}
             >
 
-                <Box h={'200px'} w='100%' paddingBottom={100} >
+                {!isGenerated ? <Box hidden={isGenerated} h={'200px'} paddingBottom={100} >
                     <Flex alignItems={'end'} flexDirection={
                         'column'
                     } justify="space-between" >
@@ -81,6 +97,28 @@ export default function UploadVideo({ }) {
 
                     </Flex>
                 </Box>
+
+                    : <GenerateEmbed />}
+
+
+
+
+
+
+<Flex  hidden={!isGenerated} alignItems={'end'} direction={'column'} alignSelf="end">
+<Button
+            // isLoading
+            // loadingText='Submitting'
+
+            colorScheme='teal'
+            variant='outline'
+            justifyContent={'center'}
+            onClick={reset}
+          >
+            Reset
+          </Button>
+</Flex>
+
             </LoadingOverlay>
 
         </>
