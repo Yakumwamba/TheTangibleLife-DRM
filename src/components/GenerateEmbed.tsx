@@ -42,7 +42,17 @@ export default function generateEmbedCode() {
             h="80%"
           />
           <Spacer mt={'8px'} />
-         
+          <Button
+            // isLoading
+            // loadingText='Submitting'
+
+            colorScheme='teal'
+            variant='outline'
+            justifyContent={'center'}
+          >
+            Reset
+          </Button>
+
         </Flex>
       </Box>
 
