@@ -1,8 +1,23 @@
 import { Textarea, Text, Box, Button, Flex, Spacer, useToast } from "@chakra-ui/react"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { CopyIcon } from '@chakra-ui/icons'
-export default function GenerateEmbedCode() {
+// @ts-ignore
+export default function GenerateEmbedCode({ videoUrl }) {
   const toast = useToast()
+  const [iframe, setIframe] = useState('')
+
+
+
+
+  useEffect(() => {
+    const iframeCode = `<iframe src="https://player.thetavideoapi.com/video/${videoUrl}"
+    width="100%"
+    height="100%"
+    />`
+    setIframe(iframeCode)
+  
+  }
+  )
   // @ts-ignore
   async function uploadFile(file) {
     console.log("Uploading a file")
@@ -28,32 +43,35 @@ export default function GenerateEmbedCode() {
 
   return (
     <>
-    <Box >
+      <Box >
 
-      <Flex alignItems={'end'} flexDirection={'column'} justify="space-between"  >
-        <Box >
-        <Flex flexDirection={'row'} justifyContent="between"  >
-          <Text  fontWeight={'semibold'}  color={'white'} mb='8px'>Generated Embed Code: </Text>
+        <Flex alignItems={'end'} flexDirection={'column'} justify="space-between"  >
+          <Box >
+            <Flex flexDirection={'row'} justifyContent="between"  >
+              <Text fontWeight={'semibold'} color={'white'} mb='8px'>Generated Embed Code: </Text>
+              <Spacer mt={'8px'} />
+              <CopyIcon fontSize={25} onClick={(e) => {
+
+                navigator.clipboard.writeText(iframe)
+                toast({
+                  title: `iFrame copied`,
+                  status: 'success',
+                  isClosable: true,
+                })
+              }} color={'white'} />
+            </Flex>
+          </Box>
+
+
+          <Textarea
+            placeholder={iframe != '' ? iframe : `Upload a video to generate embed code`}
+            size='sm'
+            h="80%"
+
+          ></Textarea>
           <Spacer mt={'8px'} />
-          <CopyIcon fontSize={25} onClick={() => {
-            toast({
-              title: `iFrame copied`,
-              status: 'success',
-              isClosable: true,
-            })
-          }} color={'white'} />
+
         </Flex>
-        </Box>
-       
-
-        <Textarea
-          placeholder='Embed code generated here...'
-          size='sm'
-          h="80%"
-        />
-        <Spacer mt={'8px'} />
-
-      </Flex>
       </Box>
 
     </>

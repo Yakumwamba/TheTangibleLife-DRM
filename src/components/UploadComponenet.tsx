@@ -18,12 +18,14 @@ export default function UploadVideo({ }) {
 
     const [isActive, setActive] = useState(false)
     const [isGenerated, setGenerated] = useState(false)
+    const [videoUrl, setVideoUrl] = useState('')
     const handleButtonClicked = useCallback(() => {
         setActive(value => !value)
 
         setTimeout(() => {
             setGenerated(true)
             setActive(value => !value)
+            setVideoUrl("video_xxxxxxxxxxxxxxxxx")
             toast({
                 title: `Video uploaded successfully`,
                 status: 'success',
@@ -110,7 +112,7 @@ export default function UploadVideo({ }) {
                     </Flex>
                 </Box>
 
-                    : <GenerateEmbed />}
+                    : <GenerateEmbed videoUrl={videoUrl} />}
 
 
 
@@ -124,7 +126,7 @@ export default function UploadVideo({ }) {
 
                         colorScheme='red'
                         //@ts-ignore
-                       
+
                         justifyContent={'center'}
                         onClick={reset}>
                         Reset
