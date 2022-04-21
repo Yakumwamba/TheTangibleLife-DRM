@@ -118,7 +118,7 @@ export default function AccountModal({ isOpen, onClose }: Props) {
                 fontSize="sm"
                 display="flex"
                 alignItems="center"
-                href={`https://explorer.thetatoken.org/address/${account}`}
+                href={`https://beta-explorer.thetatoken.org/account/${account}`}
                 isExternal
                 color="gray.400"
                 ml={6}

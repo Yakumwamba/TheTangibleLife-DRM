@@ -1,8 +1,8 @@
-import { Textarea, Text, Box, Button, Flex, Spacer } from "@chakra-ui/react"
+import { Textarea, Text, Box, Button, Flex, Spacer, useToast } from "@chakra-ui/react"
 import React from "react"
 import { CopyIcon } from '@chakra-ui/icons'
-export default function generateEmbedCode() {
-
+export default function GenerateEmbedCode() {
+  const toast = useToast()
   // @ts-ignore
   async function uploadFile(file) {
     console.log("Uploading a file")
@@ -24,26 +24,34 @@ export default function generateEmbedCode() {
       console.log(data);
     });
   }
+
+
   return (
     <>
-     
-        <Flex alignItems={'end'} flexDirection={'column'} justify="space-between"  >
-          <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
-            <Text color={'white'} mb='8px'>Generated Embed Code:</Text>
 
-            <CopyIcon color={'white'} />
-          </Flex>
+      <Flex alignItems={'end'} flexDirection={'column'} justify="space-between"  >
+        <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
+          <Text color={'white'} mb='8px'>Generated Embed Code: </Text>
 
-          <Textarea
-            placeholder='Embed code generated here...'
-            size='sm'
-            h="80%"
-          />
-          <Spacer mt={'8px'} />
-    
-
+          <CopyIcon onClick={() => {
+            toast({
+              title: `iFrame copied`,
+              status: 'success',
+              isClosable: true,
+            })
+          }} color={'white'} />
         </Flex>
- 
+
+        <Textarea
+          placeholder='Embed code generated here...'
+          size='sm'
+          h="80%"
+        />
+        <Spacer mt={'8px'} />
+
+
+      </Flex>
+
 
     </>
   )
