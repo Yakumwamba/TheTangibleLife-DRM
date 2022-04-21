@@ -8,8 +8,8 @@ import Web3 from 'web3'
 type Props = {
   handleOpenModal: any;
 };
-
-export default function ConnectButton({ handleOpenModal }: Props) {
+// @ts-ignore
+export default function ConnectButton({ handleOpenModal , handleConnectWallet}) {
   const { activateBrowserWallet, account } = useEthers();
   const etherBalance = useEtherBalance(account);
   let tangibleABI = [
@@ -444,9 +444,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   // @ts-ignore
   const contract = new web3.eth.Contract(tangibleABI, tangibleContractAddress)
 
-  function handleConnectWallet() {
-    activateBrowserWallet();
-  }
+
 
   function generateEmbedCode() {
     // const embedCode = `<iframe src="https://thetatoken.org/tangibles/embed/${tangibleContractAddress}" width="100%" height="600px" frameborder="0" allowtransparency="true" allowfullscreen="true"></iframe>`
@@ -501,7 +499,7 @@ function onChangeFile(event) {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.readAsArrayBuffer(file)
-uploadFile(reader)
+
 
 
   reader.onload = () => {
@@ -518,26 +516,10 @@ uploadFile(reader)
 }
 
 // @ts-ignore
-async function uploadFile(file) {
-  console.log("Uploading a file")
-  // @ts-ignore
-  // contract.methods.mint(account, 0).send({ from: account, gas: 1000000 })
-  
-  let options = {
-    'method': 'PUT',
-    
-    'headers': {
-      'Content-Type': 'webm/mp4',
-    },
-    body: file
-  
-  };
-  await fetch("https://storage.googleapis.com/files.thetavideoapi.com/srvacc_bskvbccj4far1na8eic0ij7r9/upload_wheiz1zh59bsq4xuvktnjwycr?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=prod-tva-dispatcher-sa%40prod-theta-video-api.iam.gserviceaccount.com%2F20220420%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20220420T225645Z&X-Goog-Expires=901&X-Goog-SignedHeaders=content-type%3Bhost&X-Goog-Signature=2c3ac50c5e267774b5a2dbb5d808eb542f6b78552da17093d1a6e74abb2be31ebbd40c7f976fa70875a08701a41e092703b1a5e2c0dfb25b74cdf7d0b431b698b60c82b622bcc7e4054342631ea6e563f11627ccee500133f710f7a5b80960f77908452f4f557d8a4867c2d25396cb9368a2443b5375729a9d6e56de58bc7f900a865076f812eabacbf056c3c238e19776f22fe2d2bd7ed01a67895d6bb5aec12cbc245d6f8a05ef12d8c8148c5f2c0fab3b344ca1729ee18145fcac837fe28bf836ca30e6dcebee70c3dd68d1272d4c4355dd3a20d98017c21428a7aa48d39b95adb95f20571309745153fa743694e310653f76ff6627eb3d8f7378964d6cfa", options).then(function(response) {
-    return response.json();
-  }).then(function(data) {
-    console.log(data);
-  });
-}
+
+
+// uploading a video to theta
+
 
 // create_time: "2022-04-20T23:02:21.618Z"
 // id: "upload_92v9tca6u7fr4p4xnr89987bm"
@@ -572,45 +554,6 @@ async function uploadFile(file) {
       py="0"
     >
      
-      <Box px="3">
-        <Text color="white" fontSize="md">
-          {etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)} TFuel
-        </Text>
-        <Text color="white" fontSize="md">
-         
-        </Text>
-        <Button
-        onClick={handleCheckNFT}
-        bg="green.100"
-        border="1px solid transparent"
-        _hover={{
-          border: "1px",
-          borderStyle: "solid",
-          borderColor: "blue.400",
-          backgroundColor: "green.100",
-        }}
-        borderRadius="xl"
-        m="1px"
-        px={3}
-        height="38px"
-        >ChecK NFT</Button>
-         <Button
-        onClick={generateEmbedCode}
-        bg="green.100"
-        border="1px solid transparent"
-        _hover={{
-          border: "1px",
-          borderStyle: "solid",
-          borderColor: "blue.400",
-          backgroundColor: "green.100",
-        }}
-        borderRadius="xl"
-        m="1px"
-        px={3}
-        height="38px"
-        >Generate EMbed</Button>
-        <input type="file" onChange={onChangeFile} />
-      </Box>
       <Button
         onClick={handleOpenModal}
         bg="gray.800"
