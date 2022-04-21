@@ -135,21 +135,6 @@ export default function UploadVideo({ }) {
                         Reset
                     </Button>
                 </Flex>
-
-
-                <Box hidden={!isGenerated}>
-
-                    <Flex direction={'column'} alignItems={'center'}>
-                        <Text fontSize='2xl' fontWeight={'bold'} color={'white'}>TheTangibleLife DRM</Text>
-                        <Text fontSize='lg' color={'white'} >This video is only available to NFT owners of TheTangibleLife NFT</Text>
-
-                        <Text fontSize='lg' >To unlock this video, please connect your wallet</Text>
-                        <Button colorScheme={'green'} height="30px" > <Text fontSize='sm' fontWeight={'semibold'} color={'white'}>Connect Wallet</Text> </Button>
-                    </Flex>
-
-
-                </Box>
-
             </LoadingOverlay>
 
         </>

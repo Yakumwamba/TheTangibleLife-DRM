@@ -11,15 +11,16 @@ import { useEthers, useEtherBalance, useContractFunction } from "@usedapp/core";
 import React from "react";
 
 import UploadVideo from "./components/UploadComponenet";
+import MainComponent from "./components/MainComponent";
+import { Route, Routes } from "react-router-dom";
+import IframeCenter from "./components/IframeCenter";
 function App() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  
   // usestate for uploaded 
   const [uploaded, setUploaded] = React.useState(false);
-  const { activateBrowserWallet, account } = useEthers()
 
-  function handleConnectWallet() {
-    activateBrowserWallet();
-  }
+
+
   // @ts-ignore
   function uploadCallback() {
     setUploaded(true);
@@ -29,19 +30,10 @@ function App() {
     <ChakraProvider theme={theme}>
       <Layout>
 
-        <Box w={'100'} alignSelf={'center'} p={4} >
-          <ConnectButton handleOpenModal={onOpen} handleConnectWallet={handleConnectWallet} />
-          <AccountModal isOpen={isOpen} onClose={onClose} />
-        </Box>
-
-        {/* <div>w3w
-          <iframe src="https://player.thetavideoapi.com/video/video_jk2mpjfp4crm7q6zh5g4vabjp8"
-            width="100%"
-            height="100%"
-          />we
-        </div> */}
-
-        <UploadVideo />
+      <Routes>
+        <Route path="/" element={<MainComponent />} />
+        <Route path="tangible-life" element={<IframeCenter />} />
+      </Routes>
 
       </Layout>
     </ChakraProvider>
