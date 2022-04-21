@@ -70,7 +70,7 @@ const UploadButton = () => {
             multiple
             register={register('file_', { validate: validateFiles })}
           >
-            <Button leftIcon={<Icon as={FiVideo} />}>
+            <Button bgGradient='linear(to-r, teal.500, green.500)'  textColor={'white'} leftIcon={<Icon as={FiVideo} />}>
               Upload video
             </Button>
           </FileUpload>

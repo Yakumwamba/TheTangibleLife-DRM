@@ -4,7 +4,7 @@ import { CopyIcon } from '@chakra-ui/icons'
 import LoadingOverlay from 'react-loading-overlay-ts';
 import GenerateEmbed from "./GenerateEmbed";
 import UploadButton from "./UploadButton";
-import { FiVideo, FiSend, FiHelpCircle} from 'react-icons/fi'
+import { FiVideo, FiSave, FiHelpCircle} from 'react-icons/fi'
 // @ts-ignore
 export default function UploadVideo({ }) {
     let [value, setValue] = React.useState('')
@@ -62,8 +62,8 @@ export default function UploadVideo({ }) {
                 {!isGenerated ? <Box hidden={isGenerated} h={'200px'} paddingBottom={100} >
                     <Flex alignItems={'end'} flexDirection={
                         'column'
-                    } justify="space-between" >
-                        <Text color={'white'} fontSize='3xl' fontWeight={'bold'} >TheTangible Life - Digital Rights Management (Dapp)</Text>
+                    }   width="100%" justify="space-between" >
+                        <Text color={'white'} fontSize='3xl' fontWeight={'bold'} >TheTangible Life - Digital Rights Management </Text>
                         <Spacer mt={'16px'} />
                         <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
                             {/* create a button to for uploading file */}
@@ -101,12 +101,13 @@ export default function UploadVideo({ }) {
                         <Button
                             // isLoading
                             // loadingText='Submitting'
-
+                            rightIcon={<Icon  color={'white'} h={6} w={6} as={FiSave} />}
                             colorScheme='green'
 
                             onClick={handleButtonClicked}
-
+                            bgGradient='linear(to-l, #7928CA, #FF0080)'
                             justifyContent={'center'}
+                            fontWeight={'semibold'}
                         >
                             Submit
                         </Button>
