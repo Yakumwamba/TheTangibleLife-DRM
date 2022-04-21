@@ -4,7 +4,7 @@ import { CopyIcon } from '@chakra-ui/icons'
 import LoadingOverlay from 'react-loading-overlay-ts';
 import GenerateEmbed from "./GenerateEmbed";
 import UploadButton from "./UploadButton";
-import { FiVideo, FiSend } from 'react-icons/fi'
+import { FiVideo, FiSend, FiHelpCircle} from 'react-icons/fi'
 // @ts-ignore
 export default function UploadVideo({ }) {
     let [value, setValue] = React.useState('')
@@ -75,8 +75,10 @@ export default function UploadVideo({ }) {
                         <Spacer mt={'8px'} />
 
                         <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
-                            <Text color={'white'} mb='8px'>(Optional) Hash of any Required NFT (see how)
+                            <Text fontStyle={'italic'} color={'white'} mb='8px'>(Optional) Hash of any Required NFT (see how)  <Icon  color={'white'} h={6} w={6} as={FiHelpCircle} />
                             </Text>
+                            {/* @ts-ignore */}
+                           
                         </Flex>
                         <Spacer mt={'8px'} />
                         <Input padding={'4px'} variant='outline' placeholder='0x1234...' />
