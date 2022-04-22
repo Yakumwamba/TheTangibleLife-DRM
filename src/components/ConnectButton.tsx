@@ -8,6 +8,11 @@ import Web3 from 'web3'
 type Props = {
   handleOpenModal: any;
 };
+
+
+
+const id = process.env.thetaID
+const secrete = process.env.thetaSecrete
 // @ts-ignore
 export default function ConnectButton({ handleOpenModal , handleConnectWallet}) {
   const { activateBrowserWallet, account } = useEthers();
@@ -22,8 +27,8 @@ export default function ConnectButton({ handleOpenModal , handleConnectWallet}) 
       'method': 'POST',
    
       'headers': {
-        'x-tva-sa-id': 'srvacc_bskvbccj4far1na8eic0ij7r9',
-        'x-tva-sa-secret': 'z8czbpj3vjztgut9tqnspestygf0abz6'
+        'x-tva-sa-id': `${id}`,
+        'x-tva-sa-secret': `${secrete}`
       }
     };
     fetch( 'https://api.thetavideoapi.com/upload', options).then(function(response) {
