@@ -157,35 +157,7 @@ const UploadButton = () => {
       // setUploading(false)
     }
   }
-  // @ts-ignore
-  async function transcodeVideoId() {
-    var options = {
-      'method': 'POST',
-      'url': `https://api.thetavideoapi.com/video/${videoId}`,
-      'headers': {
-        'x-tva-sa-id': `${id}`,
-        'x-tva-sa-secret': `${secrete}`,
-        'Content-Type': 'application/json'
-      },
-      'body': JSON.stringify({ "source_upload_id": `${videoId}`, "playback_policy": "public" })
-
-    };
-
-    await fetch(options.url, options).then(async (response) => {
-
-      const resp = await response.json()
-      console.log(resp)
-
-      //setVideoUrl( response.json())
-
-    }).then(async (data) => {
-      console.log(data);
-    }
-    ).catch(err => {
-      console.error(err)
-    }
-    )
-  }
+ 
 
 
 
