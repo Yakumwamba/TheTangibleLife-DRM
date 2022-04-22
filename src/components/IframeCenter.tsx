@@ -1,26 +1,43 @@
-import { Box, Button, Flex, Spacer, Text } from '@chakra-ui/react'
-import { useEtherBalance, useEthers } from '@usedapp/core';
+import { Box, Button, Flex, Spacer, Text, Image, Icon, toast, useToast } from '@chakra-ui/react'
+import { useEtherBalance, useEthers, } from '@usedapp/core';
+import { useCoingeckoPrice } from '@usedapp/coingecko';
+
+
 import React, { useEffect } from 'react'
 import Web3 from 'web3';
+import { FiCloudLightning, FiDroplet } from 'react-icons/fi';
 
 export default function IframeCenter() {
 
-    const { activateBrowserWallet, account } = useEthers();
+    // @ts-ignore
+    const { activateBrowserWallet, account, deactivate, chainId, SwitchNetwork } = useEthers();
     const [hasNFT, setHasNFT] = React.useState(false);
-
+    const thetaPrice = useCoingeckoPrice('theta-token', 'usd')
+    const toast = useToast()
     function handleConnectWallet() {
-        activateBrowserWallet();
+        activateBrowserWallet()
+
         console.log(account);
     }
     useEffect(() => {
-        console.log(account);
+        console.log(account, "On Theta Testnet - Chain ID: ", chainId);
         if (account) {
             handleCheckNFT();
         }
-      
+        if (chainId != 365) {
+          
+            toast({
+                title: 'Testnet Required.',
+                description: `Please note that dapp is only available on Theta Testnet.`,
+                status: 'warning',
+                duration: 3000,
+                isClosable: true,
+              })
+        }
 
-    
-    }, [account, hasNFT])
+
+    }, [account, hasNFT, chainId])
+
 
 
 
@@ -488,7 +505,7 @@ export default function IframeCenter() {
     return (
         <>
             <Box>
-                {!account ? <Flex direction={'column'} alignItems={'center'}>
+                {(!account && !hasNFT && chainId !== 365) ? <Flex direction={'column'} alignItems={'center'}>
                     <Text fontSize='2xl' fontWeight={'bold'} color={'white'}>TheTangibleLife DRM</Text>
                     <Text fontSize='lg' color={'white'} >This video is only available to NFT owners of TheTangibleLife NFT</Text>
                     <Text fontSize='lg' >To unlock this video, please connect your wallet</Text>
@@ -496,9 +513,16 @@ export default function IframeCenter() {
                 </Flex> : <Flex direction={'column'} alignItems={'center'}>
                     <Text fontSize='2xl' opacity={0.6} fontWeight={'bold'} color={'white'}> You are connected</Text>
 
-                    <Text fontSize='sm' opacity={0.4} fontWeight={'bold'} color={'white'}> {account}</Text>
+                    <Flex direction={'row'} >
 
-                    {hasNFT ? <Box >
+                        <Text fontSize='sm' opacity={0.4} fontWeight={'bold'} color={'white'}> {account}  </Text>
+                        <Image borderRadius='full'
+                            boxSize='150px' src={`https://robohash.org/${account}`} height={'48px'} width={'48px'} />
+
+                    </Flex>
+
+                    <Spacer mt={'10px'} />
+                    {(hasNFT && chainId === 365) ? <Box >
                         <iframe src="https://player.thetavideoapi.com/video/video_i32nq3tn23fia0br5cb4x90ir3"
                             /* @ts-ignore */
                             border="0"
@@ -506,14 +530,23 @@ export default function IframeCenter() {
                             height="540px"
                             allowFullScreen />
 
-                    </Box> :   
-                    
-                    <Flex alignItems={'center'} direction="column">
-                          <Spacer mt={'16px'} />
-                        <Text color={'#fff'} fontWeight="bold" fontSize='2xl' >Only NFT owners can watch - TangibleLife</Text>
-                        <Spacer mt={'8px'} />
-                        <Button textColor={'white'} alignSelf={'center'} bgGradient='linear(to-l, #7928CA, #FF0080)'>Buy NFT Now</Button>
-                    </Flex>
+                    </Box> :
+
+                        <Flex alignItems={'center'} direction="column">
+                            <Spacer mt={'16px'} />
+                            <Text color={'#fff'} fontWeight="bold" fontSize='2xl' >Only NFT owners can watch - TangibleLife</Text>
+                            <Spacer mt={'8px'} />
+                            <Button textColor={'white'} alignSelf={'center'} bgGradient='linear(to-l, #7928CA, #FF0080)' onClick={ (e) => {
+
+                            }} >Buy NFT Now</Button>
+                            <Spacer mt={'8px'} />
+                            <Flex direction={'row'} alignItems={'center'} justifyItems={'center'} >
+
+                                <Text fontSize={'sm'} fontWeight={'semibold'} color={'#fff'}>${thetaPrice}</Text>
+                                <Spacer mt={'2px'} />
+                                <Image height={5} width={5} borderRadius='full' src='/tfuel.png' />
+                            </Flex>
+                        </Flex>
                     }
 
                 </Flex>}
