@@ -465,7 +465,9 @@ export default function IframeCenter() {
         }
     ]
 
-    const tangibleContractAddress = '0x758972ce02de168d11103a473d97545bdd4d087c'
+    const tangibleContractAddress = '0x2fb8311ce01292ee38a6d9566a84454c7834ac26'
+
+    //my 0x758972ce02de168d11103a473d97545bdd4d087c
     // const contract = new Contract(tangibleContractAddress, tangibleInterface)
     // const { state, send } = useContractFunction(contract, 'tokenURI')
     /// TangibleAddress 
