@@ -1,4 +1,4 @@
-import { Textarea, Text, Box, Button, Flex, Spacer, Input, Select, Divider, toast, useToast, Icon } from "@chakra-ui/react"
+import { Textarea, Text, Box, Button, Flex, Spacer, Input, Select, Divider, toast, useToast, Icon, Link } from "@chakra-ui/react"
 import React, { useCallback, useState } from "react"
 import { CopyIcon } from '@chakra-ui/icons'
 import LoadingOverlay from 'react-loading-overlay-ts';
@@ -6,8 +6,11 @@ import GenerateEmbed from "./GenerateEmbed";
 import UploadButton from "./UploadButton";
 import { FiVideo, FiSave, FiHelpCircle} from 'react-icons/fi'
 // @ts-ignore
+import { useLocation  } from "react-router-dom";
+// @ts-ignore
 export default function UploadVideo({ }) {
     let [value, setValue] = React.useState('')
+   
     const toast = useToast()
     // @ts-ignore
     let handleInputChange = (e) => {
@@ -23,7 +26,7 @@ export default function UploadVideo({ }) {
         setActive(value => !value)
 
         setTimeout(() => {
-            setGenerated(true)
+           
             setActive(value => !value)
             setVideoUrl("video_xxxxxxxxxxxxxxxxx")
             toast({
@@ -31,6 +34,7 @@ export default function UploadVideo({ }) {
                 status: 'success',
                 isClosable: true,
             })
+       
         }, 2000
         )
 
@@ -59,7 +63,7 @@ export default function UploadVideo({ }) {
                 }}
             >
 
-                {!isGenerated ? <Box hidden={isGenerated} h={'200px'} paddingBottom={100} >
+              
                     <Flex alignItems={'end'} flexDirection={
                         'column'
                     }   width="100%" justify="space-between" >
@@ -103,38 +107,21 @@ export default function UploadVideo({ }) {
                             // loadingText='Submitting'
                             rightIcon={<Icon  color={'white'} h={6} w={6} as={FiSave} />}
                             colorScheme='green'
-
-                            onClick={handleButtonClicked}
+                        
+                            // onClick={handleButtonClicked}
                             bgGradient='linear(to-l, #7928CA, #FF0080)'
                             justifyContent={'center'}
                             fontWeight={'semibold'}
                         >
-                            Submit
+                            <Link href='/generated-iframe' >Submit </Link>
                         </Button>
 
                     </Flex>
-                </Box>
+            
 
-                    : <GenerateEmbed videoUrl={videoUrl} />}
-
-
+                 
 
 
-
-
-                <Flex hidden={!isGenerated} alignItems={'end'} direction={'column'} alignSelf="end">
-                    <Button
-                        // isLoading
-                        // loadingText='Submitting'
-
-                        colorScheme='red'
-                        //@ts-ignore
-
-                        justifyContent={'center'}
-                        onClick={reset}>
-                        Reset
-                    </Button>
-                </Flex>
             </LoadingOverlay>
 
         </>

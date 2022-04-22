@@ -14,6 +14,7 @@ import UploadVideo from "./components/UploadComponenet";
 import MainComponent from "./components/MainComponent";
 import { Route, Routes } from "react-router-dom";
 import IframeCenter from "./components/IframeCenter";
+import GenerateEmbedCode from "./components/GenerateEmbed";
 function App() {
   
   // usestate for uploaded 
@@ -32,7 +33,8 @@ function App() {
 
       <Routes>
         <Route path="/" element={<MainComponent />} />
-        <Route path="tangible-life" element={<IframeCenter />} />
+        <Route path="/tangible-life" element={<IframeCenter />} />
+        <Route path="/generated-iframe" element={<GenerateEmbedCode videoUrl={''} />} />
       </Routes>
 
       </Layout>

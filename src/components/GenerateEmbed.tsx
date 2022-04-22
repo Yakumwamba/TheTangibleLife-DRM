@@ -1,4 +1,4 @@
-import { Textarea, Text, Box, Button, Flex, Spacer, useToast } from "@chakra-ui/react"
+import { Textarea, Text, Box, Button, Flex, Spacer, useToast, Link } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 import { CopyIcon } from '@chakra-ui/icons'
 // @ts-ignore
@@ -15,7 +15,7 @@ export default function GenerateEmbedCode({ videoUrl }) {
     height="100%"
     />`
     setIframe(iframeCode)
-  
+
   }
   )
   // @ts-ignore
@@ -43,36 +43,50 @@ export default function GenerateEmbedCode({ videoUrl }) {
 
   return (
     <>
-      <Box >
-
-        <Flex alignItems={'end'} flexDirection={'column'} justify="space-between"  >
-          <Box >
-            <Flex flexDirection={'row'} justifyContent="between"  >
-              <Text fontWeight={'semibold'} color={'white'} mb='8px'>Generated Embed Code: </Text>
-              <Spacer mt={'8px'} />
-              <CopyIcon fontSize={25} onClick={(e) => {
-
-                navigator.clipboard.writeText(iframe)
-                toast({
-                  title: `iFrame copied`,
-                  status: 'success',
-                  isClosable: true,
-                })
-              }} color={'white'} />
-            </Flex>
-          </Box>
 
 
-          <Textarea
-            placeholder={iframe != '' ? iframe : `Upload a video to generate embed code`}
-            size='sm'
-            h="80%"
+      <Flex alignItems={'end'} flexDirection={'column'} justify="space-between" width={'40%'} height={'200px'} >
+        <Box >
+          <Flex flexDirection={'row'} justifyContent="between"  >
+            <Text fontWeight={'semibold'} color={'white'} mb='8px'>Generated Embed Code: </Text>
+            <Spacer mt={'8px'} />
+            <CopyIcon fontSize={25} onClick={(e) => {
 
-          ></Textarea>
-          <Spacer mt={'8px'} />
+              navigator.clipboard.writeText(iframe)
+              toast({
+                title: `iFrame copied`,
+                status: 'success',
+                isClosable: true,
+              })
+            }} color={'white'} />
+          </Flex>
+        </Box>
 
+
+        <Textarea
+          placeholder={iframe != '' ? iframe : `Upload a video to generate embed code`}
+          size='sm'
+          h="80%"
+
+        ></Textarea>
+        <Spacer mt={'8px'} />
+        <Flex alignItems={'end'} direction={'column'} alignSelf="end">
+          <Button
+            // isLoading
+            // loadingText='Submitting'
+
+            colorScheme='red'
+            //@ts-ignore
+
+            justifyContent={'center'}
+          >
+            <Link href="/" >Reset</Link>
+
+          </Button>
         </Flex>
-      </Box>
+
+      </Flex>
+
 
     </>
   )

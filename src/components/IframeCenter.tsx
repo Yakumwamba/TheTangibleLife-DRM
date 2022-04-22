@@ -24,15 +24,15 @@ export default function IframeCenter() {
         if (account) {
             handleCheckNFT();
         }
-        if (chainId != 365) {
-          
+        if (chainId !== 365) {
+
             toast({
                 title: 'Testnet Required.',
                 description: `Please note that dapp is only available on Theta Testnet.`,
                 status: 'warning',
                 duration: 3000,
                 isClosable: true,
-              })
+            })
         }
 
 
@@ -514,8 +514,8 @@ export default function IframeCenter() {
                     <Text fontSize='2xl' opacity={0.6} fontWeight={'bold'} color={'white'}> You are connected</Text>
 
                     <Flex direction={'row'} >
-
-                        <Text fontSize='sm' opacity={0.4} fontWeight={'bold'} color={'white'}> {account}  </Text>
+                        {/* @ts-ignore */}
+                        <Text fontSize='sm' opacity={0.4} fontWeight={'bold'} color={'white'}> {account.slice(0, 6)}...{account.slice(account.length - 4, account.length)}  </Text>
                         <Image borderRadius='full'
                             boxSize='150px' src={`https://robohash.org/${account}`} height={'48px'} width={'48px'} />
 
@@ -536,7 +536,7 @@ export default function IframeCenter() {
                             <Spacer mt={'16px'} />
                             <Text color={'#fff'} fontWeight="bold" fontSize='2xl' >Only NFT owners can watch - TangibleLife</Text>
                             <Spacer mt={'8px'} />
-                            <Button textColor={'white'} alignSelf={'center'} bgGradient='linear(to-l, #7928CA, #FF0080)' onClick={ (e) => {
+                            <Button textColor={'white'} alignSelf={'center'} bgGradient='linear(to-l, #7928CA, #FF0080)' onClick={(e) => {
 
                             }} >Buy NFT Now</Button>
                             <Spacer mt={'8px'} />
