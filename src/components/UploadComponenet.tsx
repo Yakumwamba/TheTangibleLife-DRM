@@ -62,7 +62,6 @@ export default function UploadVideo({ }) {
                     'column'
                 } width="100%" justify="space-between" >
                     <Text color={'white'} fontSize='3xl' alignSelf={'start'} w={'500px'} fontWeight={'bold'} >TheTangible Life - NFT-based Video Streaming </Text>
-                    <Text color={'white'} fontSize='sm' w={'300px'} alignSelf={'start'} fontWeight={'semibold'} >This dapp allows you to generate embed code for NFT-based video streaming </Text>
                     <Spacer mt={'16px'} />
                     <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
                         {/* create a button to for uploading file */}
