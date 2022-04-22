@@ -1,3 +1,7 @@
+
+
+
+// @ts-ignore
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Icon, Input, InputGroup, Select, Spacer, Text } from '@chakra-ui/react'
 import { useForm, UseFormRegisterReturn } from 'react-hook-form'
@@ -44,17 +48,30 @@ type FormValues = {
 }
 
 const UploadButton = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>()
-  const onSubmit = handleSubmit((data) => {
-    // @ts-ignore
-    console.log(data.file_)
-    uploadVideoViaPresignedUrl(data.file_)
 
-  })
+  const id = process.env.thetaID
+  const secrete = process.env.thetaSecrete
+
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>()
+
   const [videoUrl, setVideoUrl] = useState('')
   const [videoId, setVideoId] = useState(null)
   const [fileToUpload, setFile] = useState(null)
   const [uploaded, setUploaded] = useState(null)
+
+  const [supabaseURl, setSupabaseURL] = useState(null)
+
+
+
+  const onSubmit = handleSubmit((data) => {
+
+
+    
+    //uploadVideoViaPresignedUrl(data.file_)
+     uploadToSupabase(fileToUpload)
+
+  })
+
   const validateFiles = (value: FileList) => {
     if (value.length < 1) {
 
@@ -62,7 +79,7 @@ const UploadButton = () => {
     }
     for (const videoFile of Array.from(value)) {
       const fsMb = videoFile.size / (1024 * 1024)
-      const MAX_FILE_SIZE = 10
+      const MAX_FILE_SIZE =  100
       if (!fileToUpload || fileToUpload === null) {
         // @ts-ignore
         setFile(videoFile)
@@ -70,73 +87,62 @@ const UploadButton = () => {
       }
 
       if (fsMb > MAX_FILE_SIZE) {
-        return 'Max file size 10mb'
+        return 'Max file size 100mb'
       }
 
 
     }
     return true
   }
-  // @ts-ignore
-  async function uploadVideoViaPresignedUrl(file) {
 
-    // read file contents and attach to body 
-
-
-    var options = {
-      'method': 'PUT',
-      'url': videoUrl,
-      'headers': {
-        'mode': 'cors',
-        'Content-Type': 'application/octet-stream'
-      },
-      'body': fileToUpload
-
-    };
-
-    await fetch(options.url, options).then(async (response) => {
-
-      const resp = await response
-      console.log(resp.body)
-      console.log("Transcoding video")
-
-      //setVideoUrl( response.json())
-
-    }).then(async (data) => {
-      console.log(data);
-      if (videoId) {
-        transcodeVideoId()
-      }
-    }
-    ).catch(err => {
-      alert(err)
-    }
-    )
-
-
-
-  }
   //@ts-ignore
   const uploadToSupabase = async (file) => {
     try {
       const fileExt = file.name.split('.').pop()
       const fileName = `${Math.random()}.${fileExt}`
       const filePath = `${fileName}`
-
-      let { error: uploadError } = await supabase.storage.from('tangible-bucket').upload(filePath, file).then(async result => {
+// @ts-ignore
+      let { uploadError } = await supabase.storage.from('tangible-bucket').upload(filePath, file).then(async result => {
         console.log(result)
         // @ts-ignore
-        setUploaded(result.data.Key)
+        setUploaded(result.data.Key.split('/').pop())
         // @ts-ignore
-        console.log("url is " + result.data.Key)
+        console.log("url is " + result.data.Key.split('/').pop())
+
+
+        // @ts-ignore
+        if(result.data.Key) {
+          console.log("Created the url =========>" , result)
+          // @ts-ignore
+          //setUploaded(result.data.Key)
+       await supabase
+          .storage
+          .from('tangible-bucket')
+          //@ts-ignore
+          .createSignedUrl(result.data.Key.split('/').pop(), 60).then(async result => {
+  
+            console.log(result.data?.signedURL)
+            // @ts-ignore
+            setSupabaseURL(result.data?.signedURL)
+
+          })
+  
+          // @ts-ignore
+          console.log(result.data.Key)
+        }
+
+     
+
+
+
         return result
       })
 
 
 
       if (uploadError) {
-        console.log("Supabase Error", uploadError)
-        throw uploadError
+        console.log("Supabase Error while uploading => ", uploadError)
+        
       }
       console.log("Uploaded to supabase")
 
@@ -146,9 +152,7 @@ const UploadButton = () => {
       // onUpload(filePath)
       // $ts-ignore
     } catch (error) {
-      console.log(error)
-      // @ts-ignore
-      alert(error.message)
+      
     } finally {
       // setUploading(false)
     }
@@ -159,8 +163,8 @@ const UploadButton = () => {
       'method': 'POST',
       'url': `https://api.thetavideoapi.com/video/${videoId}`,
       'headers': {
-        'x-tva-sa-id': 'srvacc_bskvbccj4far1na8eic0ij7r9',
-        'x-tva-sa-secret': 'z8czbpj3vjztgut9tqnspestygf0abz6',
+        'x-tva-sa-id': `${id}`,
+        'x-tva-sa-secret': `${secrete}`,
         'Content-Type': 'application/json'
       },
       'body': JSON.stringify({ "source_upload_id": `${videoId}`, "playback_policy": "public" })
@@ -178,77 +182,103 @@ const UploadButton = () => {
       console.log(data);
     }
     ).catch(err => {
-      alert(err)
+      console.error(err)
     }
     )
   }
+
+
+
+
   // @ts-ignore
   async function transcodeVideoExternalUrl(url) {
     var options = {
-      'method': 'GET',
-      'url': 'https://api.thetavideoapi.com/video/video_ctc1whaxnnfsicd8a6xibzq9kd',
+      'method': 'POST',
+      'url': 'https://api.thetavideoapi.com/video',
       'headers': {
-        'x-tva-sa-id': 'srvacc_bskvbccj4far1na8eic0ij7r9',
-        'x-tva-sa-secret': 'z8czbpj3vjztgut9tqnspestygf0abz6',
+        'x-tva-sa-id': `${id}`,
+        'x-tva-sa-secret': `${secrete}`,
         'Content-Type': 'application/json'
       },
       'body': JSON.stringify({ "source_uri": `${url}`, "playback_policy": "public" })
 
     };
 
-    fetch(options.url, options).then(async (response) => {
 
+
+    await fetch(options.url, options).then(async (response) => {
+      console.log("Transcoding Video please wait......")
       const resp = await response.json()
+       const videoId = resp.body.videos[0].id
       console.log(resp)
-
+      console.log("Setting Video id to " , videoId)
+      // @ts-ignore
+      setVideoId(videoId)
+      
+    
+    
       //setVideoUrl( response.json())
 
-    }).then(async (data) => {
-      console.log(data);
+          }).then(async (data) => {
+     
     }
     ).catch(err => {
-      alert(err)
+      console.log("Error while Transcoding Video from external URL", err)
     }
     )
 
+    // if(videoId !== '') {
+    //   setInterval(async () => {
+    //     await checkProgress(videoId)
+    //   }, 5000)
+    // }
+   
+
   }
 
-  function checkProgress() {
+
+  // @ts-ignore
+  async function checkProgress(videoId) {
+
     var options = {
       'method': 'GET',
-      'url': 'https://api.thetavideoapi.com/video/video_ctc1whaxnnfsicd8a6xibzq9kd',
+      'url': `https://api.thetavideoapi.com/video/${videoId}`,
       'headers': {
-        'x-tva-sa-id': 'srvacc_bskvbccj4far1na8eic0ij7r9',
-        'x-tva-sa-secret': 'z8czbpj3vjztgut9tqnspestygf0abz6',
-        'Content-Type': 'application/json'
+        'x-tva-sa-id': `${id}`,
+        'x-tva-sa-secret': `${secrete}`
       },
-      // 'body': JSON.stringify({"source_uri":"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4","playback_policy":"public"})
+    
 
     };
 
-    fetch(options.url, options).then(async (response) => {
-
+    await fetch(options.url, options).then(async (response) => {
+      console.log("Checking progress for video id ....." + videoId)
       const resp = await response.json()
-      console.log(resp)
-
+      console.log("====== Progress REsponse ======== ", resp.body.videos)
+      if(resp.body.videos[0].progress == 99.9) {
+        console.log("Uploading to Theta Network almost done:" , resp.body.videos[0].progress)
+      }
       //setVideoUrl( response.json())
 
     }).then(async (data) => {
       console.log(data);
     }
     ).catch(err => {
-      alert(err)
+    console.log("Error in checking the video Pogress", err)
     }
     )
   }
 
   async function requestPresignedUrl() {
+
+   
+
     var options = {
       'method': 'POST',
       'url': 'https://api.thetavideoapi.com/upload',
       'headers': {
-        'x-tva-sa-id': 'srvacc_bskvbccj4far1na8eic0ij7r9',
-        'x-tva-sa-secret': 'z8czbpj3vjztgut9tqnspestygf0abz6'
+        'x-tva-sa-id': `${id}`,
+        'x-tva-sa-secret': `${secrete}`
       },
 
     };
@@ -256,7 +286,7 @@ const UploadButton = () => {
       const presignedUrl = await response.json()
       console.log("requested presigned url", presignedUrl)
       setVideoUrl(presignedUrl.body.uploads[0].presigned_url)
-      setVideoId(presignedUrl.body.uploads[0].id)
+      //setVideoId(presignedUrl.body.uploads[0].id)
       console.log("presigned url", presignedUrl.body.uploads[0].presigned_url, "videoId", presignedUrl.body.uploads[0].id)
       //setVideoUrl( response.json())
 
@@ -268,28 +298,17 @@ const UploadButton = () => {
   }
 // @ts-ignore
   useEffect(async () => {
-    console.log("File to upload is ", fileToUpload)
-    // uploadVideoViaPresignedUrl(fileToUpload)
+    // console.log("File to upload is ", fileToUpload)
+    // // uploadVideoViaPresignedUrl(fileToUpload)
 
-    uploadToSupabase(fileToUpload)
-    if (uploaded !== null ) {
-      alert("The file was uploaed successfully")
-      setUploaded(null)
-      const { signedURL, error } = await supabase
-        .storage
-        .from('tangible-bucket')
-        .createSignedUrl(uploaded, 60).then(async result => {
-          console.log(result)
-          // @ts-ignore
-          setUploaded(result.data.Key)
-          // @ts-ignore
-          console.log(result.data.Key)
-          return result
-        })
-    
-  
+    if(supabaseURl) {
+      console.log("Awaiting video Transcoding...")
+      console.log("External URL to be transcoded is ", supabaseURl)
+      await transcodeVideoExternalUrl(supabaseURl)
     }
-  }, [fileToUpload, uploaded])
+
+     
+  }, [supabaseURl])
 
   return (
     <>
@@ -311,7 +330,7 @@ const UploadButton = () => {
                 alert("File selected")
               }}
               onClick={() => {
-                requestPresignedUrl()
+                //requestPresignedUrl()
               }} bgGradient='linear(to-r, teal.500, green.500)' textColor={'white'} leftIcon={<Icon as={FiVideo} />}>
               Upload video
             </Button>
@@ -342,22 +361,24 @@ const UploadButton = () => {
             <option value='large'>1920 x 1080</option>
           </Select>
           <Spacer mt={'8px'} />
+          <Flex direction={'row'}justifyContent={'end'} > 
           <Button
             alignSelf={'end'}
-            justifySelf={'end'}
+            
             // isLoading
             // loadingText='Submitting'
             rightIcon={<Icon color={'white'} h={6} w={6} as={FiSave} />}
             colorScheme='green'
             // @ts-ignore
-            // onClick={uploadVideoViaPresignedUrl}
             bgColor={'#F88487'}
             justifyContent={'center'}
             fontWeight={'semibold'}
-            type='submit'
+           type='submit'
           >
             {/* <Link href='/generated-iframe' >Submit </Link> */} Upload
           </Button>
+          </Flex>
+          
         </FormControl>
 
 
