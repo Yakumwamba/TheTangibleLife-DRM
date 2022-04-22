@@ -8,6 +8,11 @@ import Web3 from 'web3'
 type Props = {
   handleOpenModal: any;
 };
+
+
+
+const id = process.env.thetaID
+const secrete = process.env.thetaSecrete
 // @ts-ignore
 export default function ConnectButton({ handleOpenModal , handleConnectWallet}) {
   const { activateBrowserWallet, account } = useEthers();
@@ -22,8 +27,8 @@ export default function ConnectButton({ handleOpenModal , handleConnectWallet}) 
       'method': 'POST',
    
       'headers': {
-        'x-tva-sa-id': 'srvacc_bskvbccj4far1na8eic0ij7r9',
-        'x-tva-sa-secret': 'z8czbpj3vjztgut9tqnspestygf0abz6'
+        'x-tva-sa-id': `${id}`,
+        'x-tva-sa-secret': `${secrete}`
       }
     };
     fetch( 'https://api.thetavideoapi.com/upload', options).then(function(response) {
@@ -55,33 +60,6 @@ function onChangeFile(event) {
 }
 
 // @ts-ignore
-
-
-// uploading a video to theta
-
-
-// create_time: "2022-04-20T23:02:21.618Z"
-// id: "upload_92v9tca6u7fr4p4xnr89987bm"
-// presigned_url: "https://storage.googleapis.com/files.thetavideoapi.com/srvacc_bskvbccj4far1na8eic0ij7r9/upload_92v9tca6u7fr4p4xnr89987bm?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=prod-tva-dispatcher-sa%40prod-theta-video-api.iam.gserviceaccount.com%2F20220420%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20220420T230221Z&X-Goog-Expires=901&X-Goog-SignedHeaders=content-type%3Bhost&X-Goog-Signature=5a9e98fbfa4d81e6feeaa0bd876cea263ed184982ae14700bcf328b00a879103aff918b6bc555ed49b1f26013720d7545a8ea4337583b17edd4563de994ebe03461da08d20838c2990e221fde1676734ef9380daf68e2830d5f4b8588f421230108d9087083a15e3a8999bee5963793f39e16d0fd4f8a38499d9bad31a75afc93147c16ab822658e772eadfed51c649efe1341e2e242f5b908525a6e59f3ad17731347e0ed91fea12960b517302475ff8e16c3eea78c100ff7152e34296c287ce1422056d5734cd0ecb888809e9b8d4e9f6e67189981fe249f86b41edd0315514732091d83831b699cd03755063482d3dd86b4b914a2613ec3d34f24ef8bcaac"
-// presigned_url_expiration: "2022-04-20T23:17:21.618Z"
-// presigned_url_expired: false
-// service_account_id: "srvacc_bskvbccj4far1na8eic0ij7r9"
-// update_time: "2022-04-20T23:02:21.618Z"
-
-
-
-// curl --location --request POST 'https://api.thetavideoapi.com/video' \
-// --header 'x-tva-sa-id: srvacc_bskvbccj4far1na8eic0ij7r9' \
-// --header 'x-tva-sa-secret: z8czbpj3vjztgut9tqnspestygf0abz6' \
-// --header 'Content-Type: application/json' \
-// --data-raw '{
-//     "source_upload_id": "upload_92v9tca6u7fr4p4xnr89987bm",
-//     "playback_policy": "public"
-// }'
-
-// curl --location --request GET 'https://api.thetavideoapi.com/video/video_sizgud9uak1se135j2uixpzc17' \
-// --header 'x-tva-sa-id: srvacc_bskvbccj4far1na8eic0ij7r9' \
-// --header 'x-tva-sa-secret: z8czbpj3vjztgut9tqnspestygf0abz6'
 
 
   return account ? (

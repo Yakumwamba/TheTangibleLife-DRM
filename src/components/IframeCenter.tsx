@@ -465,7 +465,9 @@ export default function IframeCenter() {
         }
     ]
 
-    const tangibleContractAddress = '0x758972ce02de168d11103a473d97545bdd4d087c'
+    const tangibleContractAddress = '0x2fb8311ce01292ee38a6d9566a84454c7834ac26'
+
+    //my 0x758972ce02de168d11103a473d97545bdd4d087c
     // const contract = new Contract(tangibleContractAddress, tangibleInterface)
     // const { state, send } = useContractFunction(contract, 'tokenURI')
     /// TangibleAddress 
@@ -506,7 +508,7 @@ export default function IframeCenter() {
         <>
             <Box>
                 {(!account && !hasNFT && chainId !== 365) ? <Flex direction={'column'} alignItems={'center'}>
-                    <Text fontSize='2xl' fontWeight={'bold'} color={'white'}>TheTangibleLife DRM</Text>
+                    <Text fontSize='2xl' fontWeight={'bold'} color={'white'}>TheTangibleLife - NFT-based Video Streaming</Text>
                     <Text fontSize='lg' color={'white'} >This video is only available to NFT owners of TheTangibleLife NFT</Text>
                     <Text fontSize='lg' >To unlock this video, please connect your wallet</Text>
                     <Button onClick={handleConnectWallet} colorScheme={'green'} height="30px" > <Text fontSize='sm' fontWeight={'semibold'} color={'white'}>Connect Wallet</Text> </Button>
