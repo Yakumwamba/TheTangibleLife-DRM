@@ -12,6 +12,8 @@ export default function MainComponent() {
     function handleConnectWallet() {
         activateBrowserWallet();
       }
+      
+
   return (
     <>
     <Layout>
