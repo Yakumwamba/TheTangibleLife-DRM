@@ -8,12 +8,11 @@ import { getDefaultProvider } from 'ethers'
 
 
 ReactDOM.render(
-  <React.StrictMode>
+
     <DAppProvider config={{}}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </DAppProvider>
-  </React.StrictMode>,
+    </DAppProvider>,
   document.getElementById("root")
 );
