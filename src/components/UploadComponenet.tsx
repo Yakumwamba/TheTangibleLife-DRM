@@ -13,11 +13,6 @@ export default function UploadVideo({ }) {
 
     const toast = useToast()
     // @ts-ignore
-    
-
-  
-
-  
 
 
     return (
@@ -35,7 +30,6 @@ export default function UploadVideo({ }) {
                         <UploadForm />
                     </Flex>
                     <Spacer mt={'8px'} />
-
 
                     {/* <Text color={'white'}>{videoId}</Text> */}
 

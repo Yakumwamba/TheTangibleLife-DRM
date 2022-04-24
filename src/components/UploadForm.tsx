@@ -9,6 +9,8 @@ import { FiVideo, FiSave, FiSend, FiHelpCircle } from 'react-icons/fi'
 import { supabase } from '../data/supabase'
 import VisuallyHidden from '@reach/visually-hidden'
 import LoadingOverlay from 'react-loading-overlay-ts';
+import { useNavigate } from "react-router-dom";
+
 
 type FileUploadProps = {
   register: UseFormRegisterReturn
@@ -48,10 +50,11 @@ type FormValues = {
   file_: FileList
 }
 
+
 const UploadButton = () => {
 
-  const id = process.env.thetaID
-  const secrete = process.env.thetaSecrete
+
+  const submitButton = useRef()
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>()
 
@@ -61,11 +64,17 @@ const UploadButton = () => {
   const [uploaded, setUploaded] = useState(null)
   const [isActive, setActive] = useState(false)
   const [supabaseURl, setSupabaseURL] = useState(null)
+  const [doneUpload, setDoneUpload] = useState(false)
+  const [uploadProgress, setUploadedProgress] = useState(0)
+
+
+  let navigate = useNavigate();
 
   const onSubmit = handleSubmit((data) => {
     //uploadVideoViaPresignedUrl(data.file_)
-
+    //requestPresignedUrl()
     uploadToSupabase(fileToUpload)
+    //checkProgress("video_c8b1xqbet8reedizacq4j94ni9")
 
   })
 
@@ -107,7 +116,6 @@ const UploadButton = () => {
         // @ts-ignore
         console.log("url is " + result.data.Key.split('/').pop())
 
-
         // @ts-ignore
         if (result.data.Key) {
           console.log("Created the url =========>", result)
@@ -122,24 +130,20 @@ const UploadButton = () => {
               console.log(result.data?.signedURL)
               // @ts-ignore
               setSupabaseURL(result.data?.signedURL)
-              setActive(false)
+              console.log("supabase url set" + result.data?.signedURL)
             })
 
           // @ts-ignore
           console.log(result.data.Key)
+
         }
-
-
-
-
-
+        setSupabaseURL(null)
         return result
       })
 
-
-
       if (uploadError) {
         console.log("Supabase Error while uploading => ", uploadError)
+        setActive(false)
 
       }
       console.log("Uploaded to supabase")
@@ -150,13 +154,13 @@ const UploadButton = () => {
       // onUpload(filePath)
       // $ts-ignore
     } catch (error) {
-
-    } finally {
-      // setUploading(false)
+      setActive(false)
     }
   }
   // @ts-ignore
   async function transcodeVideoId() {
+    const id = process.env.thetaID
+    const secrete = process.env.thetaSecrete
     var options = {
       'method': 'POST',
       'url': `https://api.thetavideoapi.com/video/${videoId}`,
@@ -186,32 +190,38 @@ const UploadButton = () => {
   }
   // @ts-ignore
   async function transcodeVideoExternalUrl(url) {
+    const id = process.env.thetaID
+    const secrete = process.env.thetaSecrete
     var options = {
       'method': 'POST',
       'url': 'https://api.thetavideoapi.com/video',
       'headers': {
-        'x-tva-sa-id': `${id}`,
-        'x-tva-sa-secret': `${secrete}`,
+        'x-tva-sa-id': `srvacc_bskvbccj4far1na8eic0ij7r9`,
+        'x-tva-sa-secret': `z8czbpj3vjztgut9tqnspestygf0abz6`,
         'Content-Type': 'application/json'
       },
       'body': JSON.stringify({ "source_uri": `${url}`, "playback_policy": "public" })
-
     };
 
-
-
     await fetch(options.url, options).then(async (response) => {
-      console.log("Transcoding Video please wait......")
+      console.log("Transcoding Video please wait...")
+
       const resp = await response.json()
-      const videoId = resp.body.videos[0].id
-      console.log(resp)
-      console.log("Setting Video id to ", videoId)
-      // @ts-ignore
-      setVideoId(videoId)
+      if (resp.body.videos[0].id) {
+        console.log("Setting video Id =>", resp.body.videos[0].id)
+        setVideoId(resp.body.videos[0].id)
+
+        console.log(resp)
 
 
+        // console.log("Setting Video id to ", videoId)
+        // setVideoId(videoId)
+      } else {
 
-      //setVideoUrl( response.json())
+        console.log("Error while transcoding video")
+
+      }
+
 
     }).then(async (data) => {
 
@@ -221,55 +231,71 @@ const UploadButton = () => {
     }
     )
 
-    // if(videoId !== '') {
-    //   setInterval(async () => {
-    //     await checkProgress(videoId)
-    //   }, 5000)
-    // }
-
-
   }
 
 
   // @ts-ignore
   async function checkProgress(videoId) {
-
+    const id = process.env.thetaID
+    const secrete = process.env.thetaSecrete
     var options = {
       'method': 'GET',
       'url': `https://api.thetavideoapi.com/video/${videoId}`,
       'headers': {
-        'x-tva-sa-id': `${id}`,
-        'x-tva-sa-secret': `${secrete}`
+        'x-tva-sa-id': `srvacc_bskvbccj4far1na8eic0ij7r9`,
+        'x-tva-sa-secret': `z8czbpj3vjztgut9tqnspestygf0abz6`
       },
-
 
     };
 
-    await fetch(options.url, options).then(async (response) => {
-      console.log("Checking progress for video id ....." + videoId)
-      const resp = await response.json()
-      console.log("====== Progress REsponse ======== ", resp.body.videos)
-      if (resp.body.videos[0].progress == 99.9) {
-        console.log("Uploading to Theta Network almost done:", resp.body.videos[0].progress)
-      }
-      //setVideoUrl( response.json())
+    if (!doneUpload) {
+      await fetch(options.url, options).then(async (response) => {
+        console.log("Checking progress for video id ....." + videoId)
+        const resp = await response.json()
+        console.log("====== Progress REsponse ======== ", resp.body.videos)
+        
+       
 
-    }).then(async (data) => {
-      console.log(data);
+        if (resp.body.videos[0].progress == 100) {
+
+          setActive(false)
+          setDoneUpload(true)
+          navigate('generated-iframe')
+          console.log("Player URI for the Iframe => ", resp.body.videos[0].player_uri)
+          console.log("Resolution => ", resp.body.videos[0].resolution)
+          console.log("NFT Colletion => ", resp.body.videos[0].nft_colletion)
+          console.log("Playback policy => ", resp.body.videos[0].player_uri)
+          console.log("state => ", resp.body.videos[0].state)
+          return
+        } else {
+          setUploadedProgress(resp.body.videos[0].progress)
+        }
+        //setVideoUrl( response.json())
+
+      }).then(async (data) => {
+        console.log(data);
+      }
+      ).catch(err => {
+        console.log("Error in checking the video Pogress", err)
+      }
+      )
     }
-    ).catch(err => {
-      console.log("Error in checking the video Pogress", err)
-    }
-    )
+
+    return
+
+
+
   }
 
   async function requestPresignedUrl() {
+    const id = process.env.thetaID
+    const secrete = process.env.thetaSecrete
     var options = {
       'method': 'POST',
       'url': 'https://api.thetavideoapi.com/upload',
       'headers': {
-        'x-tva-sa-id': `${id}`,
-        'x-tva-sa-secret': `${secrete}`
+        'x-tva-sa-id': `srvacc_bskvbccj4far1na8eic0ij7r9`,
+        'x-tva-sa-secret': `z8czbpj3vjztgut9tqnspestygf0abz6`
       },
 
     };
@@ -296,9 +322,27 @@ const UploadButton = () => {
       console.log("Awaiting video Transcoding...")
       console.log("External URL to be transcoded is ", supabaseURl)
       transcodeVideoExternalUrl(supabaseURl)
+      setSupabaseURL(null)
     }
 
-  }, [supabaseURl])
+    if (videoId !== null) {
+      if (!doneUpload) {
+        console.log("Checking progress for Video ==> " + videoId)
+        setTimeout(() => {
+          checkProgress(videoId)
+        }
+          , 5000)
+        //setVideoId(null)
+        console.log("Upload progress", uploadProgress)
+      }
+
+
+
+
+    }
+
+
+  }, [supabaseURl, videoId, uploadProgress])
 
 
   return (
@@ -329,12 +373,7 @@ const UploadButton = () => {
                 type='file'
                 id="single"
                 accept="video/*"
-                onChange={(event) => {
-                  alert("File selected")
-                }}
-                onClick={() => {
-                  //requestPresignedUrl()
-                }} bgGradient='linear(to-r, teal.500, green.500)' textColor={'white'} leftIcon={<Icon as={FiVideo} />}>
+                bgGradient='linear(to-r, teal.500, green.500)' textColor={'white'} leftIcon={<Icon as={FiVideo} />}>
                 Upload video
               </Button>
 
@@ -380,7 +419,7 @@ const UploadButton = () => {
                 }
                 justifyContent={'center'}
                 fontWeight={'semibold'}
-                
+
               >
                 {/* <Link href='/generated-iframe' >Submit </Link> */} Upload
               </Button>
