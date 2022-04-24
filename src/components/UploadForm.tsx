@@ -66,6 +66,7 @@ const UploadButton = () => {
   const [supabaseURl, setSupabaseURL] = useState(null)
   const [doneUpload, setDoneUpload] = useState(false)
   const [uploadProgress, setUploadedProgress] = useState(0)
+  const [uploadMessage, setUploadMessage] = useState('Preparing your upload...')
 
 
   let navigate = useNavigate();
@@ -205,10 +206,12 @@ const UploadButton = () => {
 
     await fetch(options.url, options).then(async (response) => {
       console.log("Transcoding Video please wait...")
+      setUploadMessage("Calling Theta Video API please wait...")
 
       const resp = await response.json()
       if (resp.body.videos[0].id) {
         console.log("Setting video Id =>", resp.body.videos[0].id)
+        setUploadMessage("Transcoding Video...")
         setVideoId(resp.body.videos[0].id)
 
         console.log(resp)
@@ -257,7 +260,7 @@ const UploadButton = () => {
        
 
         if (resp.body.videos[0].progress == 100) {
-
+          setUploadMessage(`Transcoding complete... ${uploadProgress} %`)
           setActive(false)
           setDoneUpload(true)
           navigate('generated-iframe')
@@ -266,9 +269,11 @@ const UploadButton = () => {
           console.log("NFT Colletion => ", resp.body.videos[0].nft_colletion)
           console.log("Playback policy => ", resp.body.videos[0].player_uri)
           console.log("state => ", resp.body.videos[0].state)
+
           return
         } else {
           setUploadedProgress(resp.body.videos[0].progress)
+          setUploadMessage(`Transcoding Video... ${uploadProgress} %`)
         }
         //setVideoUrl( response.json())
 
@@ -350,7 +355,7 @@ const UploadButton = () => {
       <LoadingOverlay
         active={isActive}
         spinner
-        text='Uploading Video please wait...'
+        text={uploadMessage}
         // @ts-ignore
         styles={{
           overlay: (base) => ({
