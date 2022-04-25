@@ -1,21 +1,32 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import { Textarea, Text, Box, Button, Flex, Spacer, useToast, Link } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 import { CopyIcon } from '@chakra-ui/icons'
+
+import {
+
+  useParams
+} from "react-router-dom";
 // @ts-ignore
-export default function GenerateEmbedCode({ videoUrl }) {
+export default function GenerateEmbedCode() {
   const toast = useToast()
   const [iframe, setIframe] = useState('')
 
-
+  const data = useParams()
 
 
   useEffect(() => {
-    const iframeCode = `<iframe src="https://player.thetavideoapi.com/video/${videoUrl}"
+    const iframeCode = `<iframe src="https://player.thetavideoapi.com/video/${data.video}"
     width="100%"
     height="100%"
     />`
     setIframe(iframeCode)
 
+    if (data.video) {
+
+    }
+
+    console.log(data.video)
   }
   )
   // @ts-ignore
@@ -84,7 +95,13 @@ export default function GenerateEmbedCode({ videoUrl }) {
 
           </Button>
         </Flex>
-
+        <Spacer mt={'8px'} />
+        <Box  >
+          <iframe src="https://player.thetavideoapi.com/video/{data.video}"
+            width="540px"
+            height="300px"
+          />
+        </Box>
       </Flex>
 
 

@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 
 
 // @ts-ignore
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Icon, Input, InputGroup, Select, Spacer, Text } from '@chakra-ui/react'
+import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Icon, Input, InputGroup, Select, Spacer, Text, useToast } from '@chakra-ui/react'
 import { useForm, UseFormRegisterReturn } from 'react-hook-form'
 import { FiVideo, FiSave, FiSend, FiHelpCircle } from 'react-icons/fi'
 import { supabase } from '../data/supabase'
@@ -67,7 +69,7 @@ const UploadButton = () => {
   const [doneUpload, setDoneUpload] = useState(false)
   const [uploadProgress, setUploadedProgress] = useState(0)
   const [uploadMessage, setUploadMessage] = useState('Preparing your upload...')
-
+  const toast = useToast()
 
   let navigate = useNavigate();
 
@@ -256,14 +258,15 @@ const UploadButton = () => {
         console.log("Checking progress for video id ....." + videoId)
         const resp = await response.json()
         console.log("====== Progress REsponse ======== ", resp.body.videos)
-        
-       
 
-        if (resp.body.videos[0].progress == 100) {
+
+
+        if (resp.body.videos[0].progress === 100) {
           setUploadMessage(`Transcoding complete... ${uploadProgress} %`)
           setActive(false)
           setDoneUpload(true)
-          navigate('generated-iframe')
+
+          navigate(`generated-iframe/${videoId}`,)
           console.log("Player URI for the Iframe => ", resp.body.videos[0].player_uri)
           console.log("Resolution => ", resp.body.videos[0].resolution)
           console.log("NFT Colletion => ", resp.body.videos[0].nft_colletion)
@@ -284,6 +287,14 @@ const UploadButton = () => {
         console.log("Error in checking the video Pogress", err)
       }
       )
+    } else {
+      toast({
+        title: `Video uploaded successfully`,
+        status: 'success',
+        isClosable: true,
+      })
+      setDoneUpload(false)
+
     }
 
     return
@@ -343,11 +354,10 @@ const UploadButton = () => {
 
 
 
-
     }
 
 
-  }, [supabaseURl, videoId, uploadProgress])
+  }, [supabaseURl, videoId, uploadProgress, doneUpload, checkProgress])
 
 
   return (

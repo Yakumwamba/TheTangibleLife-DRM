@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Center, ChakraProvider, Heading, useDisclosure, Text, Button } from "@chakra-ui/react";
 import theme from "./theme";
 import Layout from "./components/Layout";
@@ -34,7 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainComponent />} />
         <Route path="/tangible-life" element={<IframeCenter />} />
-        <Route path="/generated-iframe" element={<GenerateEmbedCode videoUrl={''} />} />
+        <Route path="/generated-iframe/:video"  element={<GenerateEmbedCode />} />
       </Routes>
 
       </Layout>
