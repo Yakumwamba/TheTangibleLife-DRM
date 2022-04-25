@@ -97,13 +97,13 @@ export default function GenerateEmbedCode() {
           </Button>
         </Flex>
         <Spacer mt={'8px'} />
-        <Box id="iframeLoader" >
+        <Flex id="iframeLoader" alignItems={'center'} >
 
           <iframe src={thetaSource}
-            width="540px"
-            height="300px"
+            width="640px"
+            height="340px"
           />
-        </Box>
+        </Flex>
       </Flex>
 
 

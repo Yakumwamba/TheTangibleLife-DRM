@@ -405,7 +405,7 @@ const UploadButton = () => {
 
             </Flex>
             <Spacer mt={'8px'} />
-            <Input padding={'4px'} textColor={'white'} variant='outline' placeholder='0x1234...' />
+            <Input padding={'4px'} textColor={'white'} variant='outline' placeholder='0x2fb8311ce01292ee38a6d9566a84454c7834ac26' />
 
             <Flex flexDirection={'row'} alignSelf={'start'} justify="space-between" alignItems={'center'} >
               <Text color={'white'} mb='8px'>Select Dimensions
