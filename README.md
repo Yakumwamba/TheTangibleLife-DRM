@@ -1,5 +1,6 @@
 
-##START HERE
+### START HERE
+
 TheTangibleLife DAPP on the cloud. (Disclaimer: NFT-based video streaming is working from a server. However the app's embed code generation was not generating the correct code at the time of submission.)
 USE CASES illustrate the different contexts that the dapp can be used.
 Source Code on github is available under MIT License.
@@ -16,7 +17,7 @@ The project and the dapp aim at the ubiquitous usage of the Theta Network & toke
 
 Our project provides a portfolio of use cases in different domains, which would use our dapp to integrate blockchain-based video streaming.
 
-##What it does
+### What it does
 The TheTangibleLife dapp allows uploading of videos and generates embed codes such that the videos are streamed only for NFT holders.
 These embed codes that can be easily embedded into any website or mobile app.
 Web developers can simply copy/paste these codes into their html codes in their favorite editor or within their CMS (ex: WordPress).
@@ -25,8 +26,10 @@ In other words, the main mechanism is NFT serving as membership token to enable 
 For example, consider a process that is progressing, such as levels in a game, and guiding videos for making it to the next level are displayed only to holders of a certain NFT.
 The simple big idea is using a simple code snippet that can be embedded into any html page, and streaming videos only if the NFT is stored in the user's connected wallet.
 Currently, such a code snippet (embed code) can be generated through ThetaVideoAPI, but the connection to ThetaDrop wallet is not possible, hence the need for a dapp like TheTangibleLife.
-How we built it
-Frontend
+
+### How we built it
+
+`Frontend
 React.js/Typescript
 Chakra UI
 useDapp/core
@@ -41,8 +44,10 @@ Theta video API
 Hardhat/Remix - for smart contract compiling.
 Solidity
 Theta Testnet
-Node.js
-Content Curation
+Node.js`
+
+### Content Curation
+
 WordPress with Cherry Blog theme to demonstrate the use cases.
 YayImages, DepositPhotos, and TheNounProject for copyright-granted stock images and icons.
 Pexels for copyright-granted videos.
@@ -56,7 +61,9 @@ Project Management
 GitHub as the code repository.
 Discord for communication and coordination.
 11Sight for video meetings.
+
 ### Challenges we ran into
+
 Setting a private network was quite a challenge, which we eventually did not pursue.
 Documentation for Theta technologies can be improved. More extensive documentation, especially video documentation, can help users and developers in many tasks, including the depositing of testnet TFUEL.
 Creating the right embed code so the video fully fits in the iframe.
@@ -64,15 +71,20 @@ Accomplishments that we're proud of
 Designing and implementing a simple yet effective system that can enable exponential growth of Theta Network and Theta Token.
 Working on not only one, but actually eight projects during the hackathon: (1) An easy-to-use dapp that can be directly by anyone to generate embed codes (Disclaimer: not fully functional at the time of submission). and (2...8) Seven web projects in different domains, with different end goals, that demonstrate a rich collection of use cases to make Theta Network grow.
 Making sure that all the content used in the use cases are copyright-granted, either created by the project team or purchased videos.
-What we learned
+
+### What we learned
+
 So many things!
 
-What's next for TheTangibleLife
+### What's next for TheTangibleLife
+
 Monetization by charging TFUEL for the generated embed codes. This can be by a prepaid wallet connected to the Theta network, where first TFUEL is deposited. Then, as TFUEL is used to generate the embed codes, these credits can be used.
 Monetization through NFT sales, which requires smart contracts where the different types of NFT are created by the admins and can be purchased directly from within the dapp by users.
 Uploading multiple videos would help creators do more in less time.
 Testing to embed the codes into websites developed using decentralized CMS.
-Use Cases
+
+### Use Cases
+
 Categories of use cases (dimensions of the "Great Online Game") are: Socialize, Learn, Work, Move, Entertain, Play, and Travel.
 
 Socialize: Consider a professional network, whose masked member information are displayed openly, but their detailed self-intro videos can be accessed only through becoming member of the "NFT Club" (ex: Bored Apes Yatch Club members, who even establish restaurants.
