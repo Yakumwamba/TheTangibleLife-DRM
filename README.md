@@ -27,22 +27,22 @@ Currently, such a code snippet (embed code) can be generated through ThetaVideoA
 
 ### How we built it
 
-`Frontend
-React.js/Typescript
-Chakra UI
-useDapp/core
-RoboHash - for generating robot avatars.
-ChackraUI/icons
-Web3.js
-ethers.js
-Theta Wallet
-MetaMask
-Backend
-Theta video API
-Hardhat/Remix - for smart contract compiling.
-Solidity
-Theta Testnet
-Node.js`
+Frontend
+- React.js/Typescript
+- Chakra UI
+- useDapp/core
+- RoboHash - for generating robot avatars.
+- ChackraUI/icons
+- Web3.js
+- ethers.js
+- Theta Wallet
+- MetaMask
+- Backend
+- Theta video API
+- Hardhat/Remix - for smart contract compiling.
+- Solidity
+- Theta Testnet
+- Node.js
 
 ### Content Curation
 
