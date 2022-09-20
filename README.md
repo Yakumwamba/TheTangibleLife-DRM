@@ -1,11 +1,9 @@
 
 ### START HERE
 
-TheTangibleLife DAPP on the cloud. (Disclaimer: NFT-based video streaming is working from a server. However the app's embed code generation was not generating the correct code at the time of submission.)
-USE CASES illustrate the different contexts that the dapp can be used.
-Source Code on github is available under MIT License.
-YouTube Video is the demo video for the Theta Q1 2022 Hackathon.
-Inspiration
+TheTangibleLife DAPP on the cloud.
+
+## Inspiration
 Most humans alive today are in a hybrid world, standing somewhere between the pysical and digital, even though the level of digitalization of our lives vary.
 Many things we do everyday, from work to entertainment, consist of interaction with a computer, completing tasks, as if in a game.
 This phenomena of many humans continuously completing tasks in a digital world has been referred to as the "Great Online Game" by the technology visionary Packy McCormick.
